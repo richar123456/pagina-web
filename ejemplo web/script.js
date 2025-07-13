@@ -1,8 +1,3 @@
-/**
- * ===== DASHBOARD DE TAREAS - JAVASCRIPT =====
- * Sistema completo de gestión de tareas con funcionalidades avanzadas
- */
-
 // ===== VARIABLES GLOBALES =====
 let tasks = []; // Array principal para almacenar todas las tareas
 let currentFilter = 'all'; // Filtro actual aplicado

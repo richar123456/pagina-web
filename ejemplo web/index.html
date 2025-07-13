@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Tareas</title>
+    
+    <!-- 
+    ===== ENLACES A ARCHIVOS EXTERNOS =====
+    Vinculación de CSS y JavaScript externos
+    -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- 
+    ===== FUENTES DE GOOGLE =====
+    Importación de fuentes externas para mejor tipografía
+    -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- 
+    ===== ICONOS =====
+    Librería de iconos para mejorar la interfaz
+    -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- 
+    ===== ESTRUCTURA PRINCIPAL =====
+    Contenedor principal de la aplicación
+    -->
+    <div class="app-container">
+        <!-- 
+        ===== ENCABEZADO =====
+        Barra superior con título y estadísticas
+        -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="app-title">
+                    <i class="fas fa-tasks"></i>
+                    Dashboard de Tareas
+                </h1>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalTasks">0</span>
+                        <span class="stat-label">Total</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="completedTasks">0</span>
+                        <span class="stat-label">Completadas</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="pendingTasks">0</span>
+                        <span class="stat-label">Pendientes</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 
+        ===== CONTENIDO PRINCIPAL =====
+        Área principal con formulario y lista de tareas
+        -->
+        <main class="main-content">
+            <!-- 
+            ===== SECCIÓN DE NUEVO TASK =====
+            Formulario para agregar nuevas tareas
+            -->
+            <section class="add-task-section">
+                <div class="add-task-container">
+                    <h2 class="section-title">
+                        <i class="fas fa-plus-circle"></i>
+                        Agregar Nueva Tarea
+                    </h2>
+                    
+                    <!-- Formulario de nueva tarea -->
+                    <form class="add-task-form" id="taskForm">
+                        <div class="form-group">
+                            <label for="taskTitle">Título de la Tarea</label>
+                            <input 
+                                type="text" 
+                                id="taskTitle" 
+                                name="taskTitle" 
+                                placeholder="Ej: Completar el proyecto..."
+                                required
+                            >
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="taskDescription">Descripción</label>
+                            <textarea 
+                                id="taskDescription" 
+                                name="taskDescription" 
+                                placeholder="Describe los detalles de la tarea..."
+                                rows="3"
+                            ></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="taskPriority">Prioridad</label>
+                                <select id="taskPriority" name="taskPriority">
+                                    <option value="low">Baja</option>
+                                    <option value="medium" selected>Media</option>
+                                    <option value="high">Alta</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="taskDueDate">Fecha Límite</label>
+                                <input 
+                                    type="date" 
+                                    id="taskDueDate" 
+                                    name="taskDueDate"
+                                >
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Agregar Tarea
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- 
+            ===== FILTROS Y BÚSQUEDA =====
+            Controles para filtrar y buscar tareas
+            -->
+            <section class="filters-section">
+                <div class="filters-container">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            placeholder="Buscar tareas..."
+                        >
+                    </div>
+                    
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">
+                            <i class="fas fa-list"></i>
+                            Todas
+                        </button>
+                        <button class="filter-btn" data-filter="pending">
+                            <i class="fas fa-clock"></i>
+                            Pendientes
+                        </button>
+                        <button class="filter-btn" data-filter="completed">
+                            <i class="fas fa-check-circle"></i>
+                            Completadas
+                        </button>
+                    </div>
+                    
+                    <div class="sort-options">
+                        <select id="sortSelect">
+                            <option value="date">Ordenar por fecha</option>
+                            <option value="priority">Ordenar por prioridad</option>
+                            <option value="title">Ordenar por título</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 
+            ===== LISTA DE TAREAS =====
+            Contenedor donde se muestran todas las tareas
+            -->
+            <section class="tasks-section">
+                <div class="tasks-container">
+                    <h2 class="section-title">
+                        <i class="fas fa-list-ul"></i>
+                        Mis Tareas
+                    </h2>
+                    
+                    <!-- Lista de tareas (se llena dinámicamente con JavaScript) -->
+                    <div class="tasks-grid" id="tasksGrid">
+                        <!-- Las tareas se agregarán aquí dinámicamente -->
+                    </div>
+                    
+                    <!-- Mensaje cuando no hay tareas -->
+                    <div class="empty-state" id="emptyState">
+                        <i class="fas fa-inbox"></i>
+                        <h3>No hay tareas</h3>
+                        <p>Agrega tu primera tarea para comenzar</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 
+    ===== MODAL PARA EDITAR TAREAS =====
+    Ventana emergente para editar tareas existentes
+    -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Editar Tarea</h3>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form class="edit-form" id="editForm">
+                <div class="form-group">
+                    <label for="editTitle">Título</label>
+                    <input type="text" id="editTitle" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editDescription">Descripción</label>
+                    <textarea id="editDescription" rows="3"></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editPriority">Prioridad</label>
+                        <select id="editPriority">
+                            <option value="low">Baja</option>
+                            <option value="medium">Media</option>
+                            <option value="high">Alta</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editDueDate">Fecha Límite</label>
+                        <input type="date" id="editDueDate">
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancelEdit">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn-primary">
+                        Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 
+    ===== NOTIFICACIONES =====
+    Contenedor para mensajes temporales
+    -->
+    <div class="notifications" id="notifications"></div>
+
+    <!-- 
+    ===== SCRIPT PRINCIPAL =====
+    Enlace al archivo JavaScript principal
+    -->
+    <script src="script.js"></script>
+</body>
+</html>
